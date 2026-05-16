@@ -1,7 +1,6 @@
 package ab.szymsun.simonuhc.commands;
 
-import ab.szymsun.simonuhc.uhc.tickable.GracePeriodCounter;
-import ab.szymsun.simonuhc.SimonUhcInit;
+import ab.szymsun.simonuhc.uhc.tickable.GameStartCounter;
 import ab.szymsun.simonuhc.uhc.UhcData;
 import ab.szymsun.simonuhc.uhc.UhcGameState;
 import ab.szymsun.simonuhc.uhc.tickable.TickableUtil;
@@ -15,6 +14,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.world.rule.GameRules;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,23 +22,21 @@ import java.util.Objects;
 public class UhcCommand implements ICommand {
     
     public static void register() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            dispatcher.register(
-                CommandManager.literal("uhc")
-                    .then(CommandManager.literal("countdown")
-                        .executes(UhcCommand::getCountDownCallback)
-                        .then(CommandManager.argument("seconds", IntegerArgumentType.integer(1)) // Requires at least 1 second
-                            .executes(UhcCommand::setCountdownCallback)))
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
+            CommandManager.literal("uhc")
+                .then(CommandManager.literal("countdown")
+                    .executes(UhcCommand::getCountDownCallback)
+                    .then(CommandManager.argument("seconds", IntegerArgumentType.integer(1)) // Requires at least 1 second
+                        .executes(UhcCommand::setCountdownCallback)))
 
-                    .then(CommandManager.literal("borders")
-                        .executes(UhcCommand::getBorderSizeCallback)
-                        .then(CommandManager.argument("blocks", IntegerArgumentType.integer(1))
-                            .executes(UhcCommand::setBorderSizeCallback)))
+                .then(CommandManager.literal("borders")
+                    .executes(UhcCommand::getBorderSizeCallback)
+                    .then(CommandManager.argument("blocks", IntegerArgumentType.integer(1))
+                        .executes(UhcCommand::setBorderSizeCallback)))
 
-                    .then(CommandManager.literal("init").executes(UhcCommand::initCallback))
+                .then(CommandManager.literal("init").executes(UhcCommand::initCallback))
 
-            );
-        });
+        ));
     }
 
     private static int getCountDownCallback(CommandContext<ServerCommandSource> context) {
@@ -105,17 +103,22 @@ public class UhcCommand implements ICommand {
         for (ServerPlayerEntity player : players) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 10*20,10));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10*20,255));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 5*20,255));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 10*20,255));
         }
 
         server.getSpawnWorld().getWorldBorder().setSize(UhcData.getBorderSize());
         server.getCommandManager().parseAndExecute(server.getCommandSource(),"spreadplayers 0 0 " + spreadDistance + " " + UhcData.getBorderSize() / 2 + " false @a[gamemode=survival]");
         server.getCommandManager().parseAndExecute(server.getCommandSource(),"execute at @a[gamemode=survival] run spawnpoint @p ~ ~ ~");
 
-        GracePeriodCounter gracePeriodCounter = new GracePeriodCounter(UhcData.getCountdownSeconds());
+        GameRules gameRules = server.getOverworld().getGameRules();
 
-        UhcData.setCurrentGameState(UhcGameState.PRE_GAME);
-        TickableUtil.registerTickable(gracePeriodCounter);
+
+
+        gameRules.setValue(GameRules.PVP, false, server);
+        gameRules.setValue(GameRules.DO_IMMEDIATE_RESPAWN,true, server);
+
+        GameStartCounter gameStartCounter = new GameStartCounter();
+        TickableUtil.registerTickable(gameStartCounter);
 
         return 1;
     }

@@ -2,22 +2,16 @@ package ab.szymsun.simonuhc;
 
 import ab.szymsun.simonuhc.commands.SpectatorCommand;
 import ab.szymsun.simonuhc.commands.UhcCommand;
-import ab.szymsun.simonuhc.uhc.UhcManager;
-import ab.szymsun.simonuhc.uhc.tickable.ITickable;
+
 import ab.szymsun.simonuhc.uhc.UhcServerEventsHandler;
 import ab.szymsun.simonuhc.uhc.tickable.TickableUtil;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 // word()
 // literal("foo")
 // argument("bar", word())

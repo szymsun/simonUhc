@@ -25,7 +25,12 @@ public class GracePeriodCounter implements ITickable {
         int seconds = ticks / 20;
         int minutes = seconds / 60;
 
-        msg.append("Time left: ").append(minutes).append(":").append(seconds % 60);
+        msg.append("Time left: ");
+        if (minutes < 10) msg.append("0");
+        msg.append(minutes).append(":");
+
+        if (seconds % 60 < 10) msg.append("0");
+        msg.append(seconds % 60);
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             player.sendMessage(Text.literal(msg.toString()), true);
