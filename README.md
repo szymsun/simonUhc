@@ -1,9 +1,8 @@
 # SimonUHC
 
+some funni project to play with :D
+
 ## Setup
 
 For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
 
-## License
-
-This template is available under the CC-BY 4.0 license. Feel free to learn from it and incorporate it in your own projects.
