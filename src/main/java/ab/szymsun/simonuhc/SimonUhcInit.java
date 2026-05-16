@@ -1,10 +1,18 @@
 package ab.szymsun.simonuhc;
 
+import ab.szymsun.simonuhc.commands.SpectatorCommand;
 import ab.szymsun.simonuhc.commands.UhcCommand;
+import ab.szymsun.simonuhc.uhc.UhcManager;
+import ab.szymsun.simonuhc.uhc.tickable.ITickable;
+import ab.szymsun.simonuhc.uhc.UhcServerEventsHandler;
+import ab.szymsun.simonuhc.uhc.tickable.TickableUtil;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +24,8 @@ import java.util.List;
 // Import everything in the CommandManager
 
 
-public class SimonUhc implements ModInitializer {
+public class SimonUhcInit implements ModInitializer {
 	public static final String MOD_ID = "SimonUHC";
-
-	public static final List<ITickable> ALL_TICKABLES = new ArrayList<>();
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -28,27 +34,19 @@ public class SimonUhc implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerTickEvents.END_SERVER_TICK.register(this::registerITickableEvents);
+		registerEvents();
 		registerCommands();
+
 		LOGGER.info("SimonUHC main Loaded. made by szymsun");
 	}
 
-
-	void registerITickableEvents(MinecraftServer server) {
-		for (int i = ALL_TICKABLES.size() - 1; i >= 0; i--) {
-			ITickable tickable = ALL_TICKABLES.get(i);
-			tickable.tick();
-			if (tickable.isFinished()) {
-				ALL_TICKABLES.remove(i);
-			}
-		}
-	}
-
-	public static void registerTickable(ITickable tickable) {
-		ALL_TICKABLES.add(tickable);
+	void registerEvents() {
+		ServerTickEvents.END_SERVER_TICK.register(TickableUtil::registerITickableEvents);
+		ServerPlayerEvents.AFTER_RESPAWN.register(UhcServerEventsHandler::registerServerPlayerAfterRespawnEvents);
 	}
 
 	void registerCommands() {
 		UhcCommand.register();
+		SpectatorCommand.register();
 	}
 }

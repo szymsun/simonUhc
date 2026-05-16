@@ -1,4 +1,4 @@
-package ab.szymsun.simonuhc;
+package ab.szymsun.simonuhc.uhc;
 
 public class UhcData {
 
@@ -7,7 +7,9 @@ public class UhcData {
     private static int countdownSeconds = 10;
     private static int borderSize = 5000;
 
-    private static boolean isUhcRunning = false;
+    private static boolean running = false;
+
+    private static UhcGameState currentGameState = UhcGameState.PRE_GAME;
 
 
     public static int[] getXYZ(){
@@ -43,11 +45,19 @@ public class UhcData {
         UhcData.borderSize = borderSize;
     }
 
-    public static boolean isIsUhcRunning() {
-        return isUhcRunning;
+    public static boolean isUhcRunning() {
+        return running;
     }
 
-    public static void setIsUhcRunning(boolean isUhcRunning) {
-        UhcData.isUhcRunning = isUhcRunning;
+    public static void setRunning(boolean running) {
+        UhcData.running = running;
+    }
+
+    public static UhcGameState getGameState() {
+        return currentGameState;
+    }
+
+    public static void setCurrentGameState(UhcGameState gameState) {
+        currentGameState = gameState;
     }
 }

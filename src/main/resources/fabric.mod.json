@@ -16,7 +16,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"ab.szymsun.simonuhc.SimonUhc"
+			"ab.szymsun.simonuhc.SimonUhcInit"
 		],
 		"client": [
 			"ab.szymsun.simonuhc.client.SimonUhcClient"
