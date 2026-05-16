@@ -1,4 +1,4 @@
-﻿package ab.szymsun.simonuhc;
+package ab.szymsun.simonuhc;
 
 import java.beans.EventHandler;
 
