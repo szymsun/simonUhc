@@ -2,14 +2,14 @@
 	"schemaVersion": 1,
 	"id": "simonuhc",
 	"version": "${version}",
-	"name": "UhcServerSide",
-	"description": "Some simple uhc mod to use with essential or with serverSome simple uhc mod to use with essential or with server",
+	"name": "SimonUHC",
+	"description": "Some simple uhc mod to use with essential, e4mc or server",
 	"authors": [
 		"szymsun"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://szymsun.github.io/",
+		"sources": "https://github.com/szymsun/simonuhc"
 	},
 	"license": "CC-BY 4.0",
 	"icon": "assets/simonuhc/icon.png",

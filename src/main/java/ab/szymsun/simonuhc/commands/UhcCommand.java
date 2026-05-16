@@ -1,5 +1,6 @@
 package ab.szymsun.simonuhc.commands;
 
+import ab.szymsun.simonuhc.SimonUhc;
 import ab.szymsun.simonuhc.UhcData;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -87,7 +88,10 @@ public class UhcCommand {
         server.getSpawnWorld().getWorldBorder().setSize(UhcData.getBorderSize());
         server.getCommandManager().parseAndExecute(server.getCommandSource(),"spreadplayers 0 0 " + spreadDistance + " " + UhcData.getBorderSize() / 2 + " false @a[gamemode=survival]");
 
+        ab.szymsun.simonuhc.Counter counter = new ab.szymsun.simonuhc.Counter(UhcData.getCountdownSeconds());
+        UhcData.setIsUhcRunning(true);
 
+        SimonUhc.registerTickable(counter);
 
         return 1;
     }

@@ -7,6 +7,9 @@ public class UhcData {
     private static int countdownSeconds = 10;
     private static int borderSize = 5000;
 
+    private static boolean isUhcRunning = false;
+
+
     public static int[] getXYZ(){
         return new int[]{x,y,z};
     }
@@ -38,5 +41,13 @@ public class UhcData {
 
     public static void setBorderSize(int borderSize) {
         UhcData.borderSize = borderSize;
+    }
+
+    public static boolean isIsUhcRunning() {
+        return isUhcRunning;
+    }
+
+    public static void setIsUhcRunning(boolean isUhcRunning) {
+        UhcData.isUhcRunning = isUhcRunning;
     }
 }
