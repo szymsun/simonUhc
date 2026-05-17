@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.MinecraftServer;
+
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -79,6 +80,13 @@ public class UhcCommand implements ICommand {
     }
 
     private static int initCallback(CommandContext<ServerCommandSource> context) {
+
+        if(context.getSource().getServer().isSingleplayer() ) {
+            if (!context.getSource().getServer().isRemote()){
+                context.getSource().sendError(Text.literal("This command is not available in singleplayer mode!"));
+                return 0;
+            }
+        }
 
         if (UhcData.getGameState() != UhcGameState.PRE_GAME) {
             context.getSource().sendError(Text.literal("UHC is already running!"));

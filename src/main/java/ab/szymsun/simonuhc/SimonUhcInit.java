@@ -9,6 +9,7 @@ import net.fabricmc.api.ModInitializer;
 
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class SimonUhcInit implements ModInitializer {
 	void registerEvents() {
 		ServerTickEvents.END_SERVER_TICK.register(TickableUtil::registerITickableEvents);
 		ServerPlayerEvents.AFTER_RESPAWN.register(UhcServerEventsHandler::registerServerPlayerAfterRespawnEvents);
+		ServerLifecycleEvents.SERVER_STOPPING.register(UhcServerEventsHandler::registerServerStopEvents);
 	}
 
 	void registerCommands() {
