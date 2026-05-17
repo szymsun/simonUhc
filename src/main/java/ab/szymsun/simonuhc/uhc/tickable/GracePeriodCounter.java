@@ -3,9 +3,12 @@ package ab.szymsun.simonuhc.uhc.tickable;
 import ab.szymsun.simonuhc.uhc.UhcData;
 import ab.szymsun.simonuhc.uhc.UhcGameState;
 import ab.szymsun.simonuhc.uhc.UhcManager;
+import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class GracePeriodCounter implements ITickable {
 
@@ -34,6 +37,11 @@ public class GracePeriodCounter implements ITickable {
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             player.sendMessage(Text.literal(msg.toString()), true);
+
+            if(seconds % 60 < 11 && minutes == 0){
+                player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("Grace period ends in:").formatted(Formatting.RED).formatted(Formatting.BOLD)));
+                player.networkHandler.sendPacket(new SubtitleS2CPacket(Text.literal(String.valueOf(seconds)).formatted(Formatting.YELLOW).formatted(Formatting.BOLD)));
+            }
         }
 
         if (ticks <= 0) finished = true;
