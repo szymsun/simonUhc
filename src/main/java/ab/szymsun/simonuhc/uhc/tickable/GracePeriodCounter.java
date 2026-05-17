@@ -32,13 +32,13 @@ public class GracePeriodCounter implements ITickable {
         if (minutes < 10) msg.append("0");
         msg.append(minutes).append(":");
 
-        if (seconds % 60 < 10) msg.append("0");
-        msg.append(seconds % 60);
+        if (1 + (seconds % 60) < 10) msg.append("0");
+        msg.append(1 + (seconds % 60));
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             player.sendMessage(Text.literal(msg.toString()), true);
 
-            if(seconds % 60 < 11 && minutes == 0){
+            if(seconds % 60 < 11 && minutes == 0 && ticks % 20 == 0){
                 player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("Grace period ends in:").formatted(Formatting.RED).formatted(Formatting.BOLD)));
                 player.networkHandler.sendPacket(new SubtitleS2CPacket(Text.literal(String.valueOf(seconds)).formatted(Formatting.YELLOW).formatted(Formatting.BOLD)));
             }
