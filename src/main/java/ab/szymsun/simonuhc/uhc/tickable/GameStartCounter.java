@@ -1,5 +1,6 @@
 package ab.szymsun.simonuhc.uhc.tickable;
 
+import ab.szymsun.simonuhc.SimonUHCGameRules;
 import ab.szymsun.simonuhc.uhc.UhcData;
 import ab.szymsun.simonuhc.uhc.UhcGameState;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
@@ -10,7 +11,7 @@ import net.minecraft.util.Formatting;
 
 public class GameStartCounter implements ITickable{
 
-    boolean f = false;
+    boolean finished = false;
 
     int startCooldown = 10;
     int seconds;
@@ -35,13 +36,15 @@ public class GameStartCounter implements ITickable{
 
     @Override
     public void onFinish(MinecraftServer server) {
-        f = true;
+        finished = true;
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()){
             player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("GOGOGOGOOOO").formatted(Formatting.GREEN).formatted(Formatting.BOLD)));
         }
 
-        GracePeriodCounter gracePeriodCounter = new GracePeriodCounter(UhcData.getCountdownSeconds());
+        int countdown = server.getSpawnWorld().getGameRules().getValue(SimonUHCGameRules.GAME_COUNTDOWN_GAMERULE);
+
+        GracePeriodCounter gracePeriodCounter = new GracePeriodCounter(countdown);
 
         UhcData.setCurrentGameState(UhcGameState.PRE_GAME);
         TickableUtil.registerTickable(gracePeriodCounter);
@@ -49,6 +52,6 @@ public class GameStartCounter implements ITickable{
 
     @Override
     public boolean isFinished() {
-        return f;
+        return finished;
     }
 }

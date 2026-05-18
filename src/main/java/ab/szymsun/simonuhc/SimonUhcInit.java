@@ -11,6 +11,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.world.rule.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 // word()
@@ -37,8 +38,13 @@ public class SimonUhcInit implements ModInitializer {
 
 	void registerEvents() {
 		ServerTickEvents.END_SERVER_TICK.register(TickableUtil::registerITickableEvents);
+		ServerLifecycleEvents.SERVER_STARTED.register(UhcServerEventsHandler::registerServerStartedEvents);
 		ServerPlayerEvents.AFTER_RESPAWN.register(UhcServerEventsHandler::registerServerPlayerAfterRespawnEvents);
 		ServerLifecycleEvents.SERVER_STOPPING.register(UhcServerEventsHandler::registerServerStopEvents);
+	}
+
+	void registerGameRules() {
+
 	}
 
 	void registerCommands() {

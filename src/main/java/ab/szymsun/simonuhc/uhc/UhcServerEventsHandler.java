@@ -1,12 +1,9 @@
-package ab.szymsun.simonuhc.uhc;
+ package ab.szymsun.simonuhc.uhc;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
+import net.minecraft.world.rule.GameRules;
 
 public class UhcServerEventsHandler {
     public static void registerServerPlayerAfterRespawnEvents(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
@@ -20,5 +17,12 @@ public class UhcServerEventsHandler {
         if(UhcData.getGameState() != UhcGameState.PRE_GAME){
             UhcData.setCurrentGameState(UhcGameState.PRE_GAME);
         }
+    }
+
+    public static void registerServerStartedEvents(MinecraftServer server){
+        GameRules gameRules = server.getSpawnWorld().getGameRules();
+
+        gameRules.setValue(GameRules.PVP, false, server);
+        gameRules.setValue(GameRules.DO_IMMEDIATE_RESPAWN,true, server);
     }
 }
