@@ -3,7 +3,7 @@
 	"package": "ab.szymsun.simonuhc.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"ExampleClientMixin"
+
 	],
 	"injectors": {
 		"defaultRequire": 1

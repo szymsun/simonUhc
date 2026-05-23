@@ -1,9 +1,12 @@
 package ab.szymsun.simonuhc.uhc;
 
+import ab.szymsun.simonuhc.SimonUHCGameRules;
+import ab.szymsun.simonuhc.team.UhcTeam;
 import ab.szymsun.simonuhc.uhc.tickable.ShowdownManager;
 import ab.szymsun.simonuhc.uhc.tickable.TickableUtil;
 import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -14,6 +17,7 @@ import net.minecraft.world.rule.GameRules;
 import java.util.List;
 
 public class UhcManager {
+
     public static void OnFinalShowdown(MinecraftServer server) {
         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
 
@@ -39,7 +43,9 @@ public class UhcManager {
         winner.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("You won!").formatted(Formatting.GREEN).formatted(Formatting.BOLD)));
         winner.changeGameMode(GameMode.CREATIVE);
 
-        server.getSpawnWorld().getWorldBorder().setSize(UhcData.getBorderSize());
+        int border = server.getOverworld().getGameRules().getValue(SimonUHCGameRules.GAME_BORDER_GAMERULE);
+
+        server.getSpawnWorld().getWorldBorder().setSize(border);
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             if (player != winner) {

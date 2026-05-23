@@ -21,7 +21,7 @@ public class UhcServerEventsHandler {
 
     public static void registerServerStartedEvents(MinecraftServer server){
         GameRules gameRules = server.getSpawnWorld().getGameRules();
-
+        gameRules.setValue(GameRules.LOCATOR_BAR, false, server);
         gameRules.setValue(GameRules.PVP, false, server);
         gameRules.setValue(GameRules.DO_IMMEDIATE_RESPAWN,true, server);
     }

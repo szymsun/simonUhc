@@ -45,7 +45,6 @@ public class GracePeriodCounter implements ITickable {
         }
 
         if (ticks <= 0) finished = true;
-        else UhcData.setCurrentCountdown(seconds);
     }
 
     public void onFinish(MinecraftServer server) {
